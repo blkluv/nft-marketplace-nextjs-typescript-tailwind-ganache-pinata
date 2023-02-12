@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react'
-import { NFTMetaData } from '../../../types/nft'
+import { NFTMetaData } from '../../../../types/nft'
 
 type NFTItemProps = {
   item: NFTMetaData

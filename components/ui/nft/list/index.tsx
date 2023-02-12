@@ -1,6 +1,6 @@
 import { FunctionComponent, PropsWithChildren } from 'react'
 import NFTItem from '../item'
-import { NFTMetaData } from '../../../types/nft'
+import { NFTMetaData } from '../../../../types/nft'
 type NFTListProps = {
   nfts: NFTMetaData[]
 }
