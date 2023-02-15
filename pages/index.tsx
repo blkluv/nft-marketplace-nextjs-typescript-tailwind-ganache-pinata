@@ -7,19 +7,21 @@ import { NFTMetaData } from '@_types/nft'
 import { useWeb3 } from '@providers/web3'
 import { useEffect } from 'react'
 const Home: NextPage = () => {
-  const { ethereum, provider } = useWeb3()
-  const acc = ethereum?.request({ method: 'eth_requestAccounts' }).then(data => {
+  const { provider, contract } = useWeb3()
 
-  })
+  const getNFTInfo = async () => {
+    console.log(await contract!.name())
+    console.log(await contract!.symbol())
+  }
 
+  contract && getNFTInfo()
 
   const getAccounts = async () => {
     const accounts = await provider!.listAccounts()
-    console.log(accounts[0])
   }
 
-  provider && getAccounts()
-  
+ 
+
   return (
     <BaseLayout>
       {}
