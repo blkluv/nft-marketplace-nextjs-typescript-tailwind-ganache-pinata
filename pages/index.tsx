@@ -8,19 +8,7 @@ import { useWeb3 } from '@providers/web3'
 import { useEffect } from 'react'
 const Home: NextPage = () => {
   const { provider, contract } = useWeb3()
-
-  const getNFTInfo = async () => {
-    console.log(await contract!.name())
-    console.log(await contract!.symbol())
-  }
-
-  contract && getNFTInfo()
-
-  const getAccounts = async () => {
-    const accounts = await provider!.listAccounts()
-  }
-
- 
+  
 
   return (
     <BaseLayout>
