@@ -8,15 +8,13 @@ export type UseAccountHook = ReturnType<AccountHookFactory>
 //deps -> provider, ethereum, contract
 export const hookFactory: AccountHookFactory = (deps) => (params) => {
   const swrRes = useSWR('web3/useAccount', () => {
-    console.log(deps)
-    console.log(params)
     return 'This is a test'
   })
 
   return swrRes
 }
 
-export const useAccount = hookFactory({
+export const useAccounts = hookFactory({
   ethereum: undefined,
   provider: undefined,
 })
