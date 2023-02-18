@@ -36,7 +36,9 @@ const Walletbar: FunctionComponent<WalletbarProps> = ({
   }
 
   if (account) {
-    return (
+    
+    return (  
+      
       <Menu as='div' className='ml-3 relative'>
         <div>
           <Menu.Button className='bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white'>
@@ -50,7 +52,7 @@ const Walletbar: FunctionComponent<WalletbarProps> = ({
         </div>
 
         <Menu.Items className='z-10 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none'>
-          <Menu.Item>
+    {/*      <Menu.Item>
             {() => (
               <button
                 disabled={true}
@@ -60,8 +62,8 @@ const Walletbar: FunctionComponent<WalletbarProps> = ({
                   -4
                 )}`}
               </button>
-            )}
-          </Menu.Item>
+            )} 
+          </Menu.Item> */}
           <Menu.Item>
             {({ active }) => (
               <Link href='/profile' legacyBehavior>
@@ -105,7 +107,7 @@ const Walletbar: FunctionComponent<WalletbarProps> = ({
           type='button'
           className='inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
         >
-          No Wallet
+          Install Web3 Wallet
         </button>
       </div>
     )
