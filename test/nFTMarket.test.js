@@ -90,4 +90,65 @@ contract('NFTMarket', (accounts) => {
       assert.equal(currentOwner, accounts[1], 'Owner not changing')
     })
   })
+
+  describe('token transfers', () => {
+    const tokenURI = 'https://test-json-2.com'
+    before(async () => {
+      await _contract.mintToken(tokenURI, _nftPrice, {
+        from: [accounts[0]],
+        value: _listingPrice,
+      })
+    })
+
+    it('Should have two NFTs created', async () => {
+      const totalSupply = await _contract.totalSupply()
+      assert.equal(
+        totalSupply.toNumber(),
+        2,
+        'Total supply of token is not correct'
+      )
+    })
+
+    it('Should be able to retrieve NFTs by index', async () => {
+      const nftId1 = await _contract.tokenByIndex(0)
+      const nftId2 = await _contract.tokenByIndex(1)
+      assert.equal(nftId1.toNumber(), 1, 'NFTId is wrong')
+      assert.equal(nftId2.toNumber(), 2, 'NFTId is wrong')
+    })
+
+    it('Should have one listed NFT', async () => {
+      const allNFTs = await _contract.getAllNFTsOnSale()
+      assert.equal(allNFTs[0].tokenId, 2, 'NFTId has a wrong Id')
+    })
+
+    it('Account[1] should have one owned NFT', async () => {
+      const ownedNFTs = await _contract.getOwnedNFTs({ from: accounts[1] })
+      assert.equal(ownedNFTs[0].tokenId, 1, 'NFTId has a wrong Id')
+    })
+
+    it('Account[0] should have one owned NFT', async () => {
+      const ownedNFTs = await _contract.getOwnedNFTs({ from: accounts[0] })
+      assert.equal(ownedNFTs[0].tokenId, 2, 'NFTId has a wrong Id')
+    })
+  })
+
+  describe('Token transfer to new owner', async () => {
+    before(async () => {
+      await _contract.transferFrom(accounts[0], accounts[1], 2)
+    })
+
+    it('accounts[0] should own 0 tokens', async () => {
+      const ownedNFTs = await _contract.getOwnedNFTs({
+        from: accounts[0],
+      })
+      assert.equal(ownedNFTs.length, 0, 'Invalid length of tokens')
+    })
+
+    it('accounts[0] should own 2 tokens', async () => {
+      const ownedNFTs = await _contract.getOwnedNFTs({
+        from: accounts[1],
+      })
+      assert.equal(ownedNFTs.length, 1, 'Invalid length of tokens')
+    })
+  })
 })
