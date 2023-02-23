@@ -1,8 +1,8 @@
 import { FunctionComponent, PropsWithChildren } from 'react'
 import NFTItem from '../item'
-import { NFTMetaData } from '../../../../types/nft'
+import { NFT, NFTAttribute, NFTMetaData } from '../../../../types/nft'
 type NFTListProps = {
-  nfts: NFTMetaData[]
+  nfts: NFT[] | undefined
 }
 const NFTList: FunctionComponent<NFTListProps> = ({ nfts }) => {
   return (
@@ -10,7 +10,7 @@ const NFTList: FunctionComponent<NFTListProps> = ({ nfts }) => {
       {nfts &&
         nfts.map((nft) => (
           <div
-            key={nft.image}
+            key={nft.meta.image}
             className='flex flex-col rounded-lg shadow-lg overflow-hidden'
           >
             <NFTItem item={nft} />

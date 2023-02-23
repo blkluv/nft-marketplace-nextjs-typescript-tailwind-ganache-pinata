@@ -1,0 +1,19 @@
+{
+  "description": "Courageous, skilled fighter, defender of the galaxy.",
+  "image": "https://gateway.pinata.cloud/ipfs/QmVqnN3FVdxeUbzHuVsmnb7r5BRixZtym1nyftYZhEGW7M?_gl=1*1sej2d*_ga*ODMwNzE0NTg2LjE2NzcxNzE2NjM.*_ga_5RMPXG14TE*MTY3NzE3MTY2Mi4xLjEuMTY3NzE3MzA2NC40OS4wLjA.",
+  "name": "Eris Stardust",
+  "attributes": [
+    {
+      "trait_type": "attack",
+      "value": "80"
+    },
+    {
+      "trait_type": "health",
+      "value": "100"
+    },
+    {
+      "trait_type": "speed",
+      "value": "70"
+    }
+  ]
+}

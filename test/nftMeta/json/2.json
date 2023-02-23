@@ -1,0 +1,19 @@
+{
+    "description": "Agile, stealthy operative, master of infiltration.",
+    "image": "https://gateway.pinata.cloud/ipfs/QmUjkYQVv8cjJvTyVimtmXC7zFHN7DG6eMPBrFoqWUJuW8?_gl=1*1l5x969*_ga*ODMwNzE0NTg2LjE2NzcxNzE2NjM.*_ga_5RMPXG14TE*MTY3NzE3MTY2Mi4xLjEuMTY3NzE3MzA2NC40OS4wLjA.",
+    "name": "Zara Vega",
+    "attributes": [
+      {
+        "trait_type": "attack",
+        "value": "50"
+      },
+      {
+        "trait_type": "health",
+        "value": "80"
+      },
+      {
+        "trait_type": "speed",
+        "value": "70"
+      }
+    ]
+  }

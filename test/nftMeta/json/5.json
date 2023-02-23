@@ -1,0 +1,19 @@
+{
+  "description": "Charismatic, persuasive diplomat, voice of reason.",
+  "image": "https://gateway.pinata.cloud/ipfs/QmZGLXjVBmqi6S4NSKYPBoX5Gqwoq6x6TuqH8rtrJmuXz3?_gl=1*1b8fjaj*_ga*ODMwNzE0NTg2LjE2NzcxNzE2NjM.*_ga_5RMPXG14TE*MTY3NzE3MTY2Mi4xLjEuMTY3NzE3MzA2NC40OS4wLjA.",
+  "name": "Arwen Telrúnya",
+  "attributes": [
+    {
+      "trait_type": "attack",
+      "value": "40"
+    },
+    {
+      "trait_type": "health",
+      "value": "100"
+    },
+    {
+      "trait_type": "speed",
+      "value": "70"
+    }
+  ]
+}

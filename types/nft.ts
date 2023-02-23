@@ -13,3 +13,14 @@ export type NFTMetaData = {
   image: string
   attributes: NFTAttribute[]
 }
+
+export type NFTCore = {
+  tokenId: number
+  price: number
+  creator: string
+  isListed: boolean
+}
+
+export type NFT = {
+  meta: NFTMetaData
+} & NFTCore

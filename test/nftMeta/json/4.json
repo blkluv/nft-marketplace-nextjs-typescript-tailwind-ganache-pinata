@@ -1,0 +1,19 @@
+{
+  "description": "Fearless, relentless hunter, protector of the wild.",
+  "image": "https://gateway.pinata.cloud/ipfs/QmUHrfBywJt4xefJjZcqo4VViYTpuU4xMAbAx8pGYzvRFt?_gl=1*1b8fjaj*_ga*ODMwNzE0NTg2LjE2NzcxNzE2NjM.*_ga_5RMPXG14TE*MTY3NzE3MTY2Mi4xLjEuMTY3NzE3MzA2NC40OS4wLjA.",
+  "name": "Orionis Nightingale",
+  "attributes": [
+    {
+      "trait_type": "attack",
+      "value": "20"
+    },
+    {
+      "trait_type": "health",
+      "value": "60"
+    },
+    {
+      "trait_type": "speed",
+      "value": "100"
+    }
+  ]
+}
