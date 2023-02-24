@@ -1,5 +1,6 @@
 import { FunctionComponent } from 'react'
-import { NFT, NFTMetaData } from '../../../../types/nft'
+import { NFT } from '../../../../types/nft'
+import Image from 'next/image'
 
 type NFTItemProps = {
   item: NFT
@@ -9,10 +10,12 @@ const NFTItem: FunctionComponent<NFTItemProps> = ({ item }) => {
   return (
     <>
       <div className='flex-shrink-0'>
-        <img
+        <Image
           className={`h-full w-full object-cover`}
           src={item.meta.image}
           alt='New NFT'
+          width={300}
+          height={300}
         />
       </div>
       <div className='flex-1 bg-white p-6 flex flex-col justify-between'>

@@ -3,21 +3,22 @@ import { NFT } from '@_types/nft'
 import { ethers } from 'ethers'
 import useSWR from 'swr'
 
-type ListedNFTsHookFactory = CryptoHookFactory<NFT[], UseListedNFTsResponse>
+type OwnedNFTsHookFactory = CryptoHookFactory<NFT[], UseOwnedNFTsResponse>
 
-export type UseListedNFTsHook = ReturnType<ListedNFTsHookFactory>
+export type UseOwnedNFTsHook = ReturnType<OwnedNFTsHookFactory>
 
-type UseListedNFTsResponse = {
+type UseOwnedNFTsResponse = {
+
 }
 //deps -> provider, ethereum, contract
-export const hookFactory: ListedNFTsHookFactory =
+export const hookFactory: OwnedNFTsHookFactory =
   ({ contract }) =>
   () => {
     const { data, ...swrRes } = useSWR(
-      contract ? 'web3/useListedNFTs' : null,
+      contract ? 'web3/useOwnedNFTs' : null,
       async () => {
         const nfts = [] as NFT[]
-        const coreNFTs = await contract!.getAllNFTsOnSale()
+        const coreNFTs = await contract!.getOwnedNFTs()
 
         for (let i = 0; i < coreNFTs.length; i++) {
           const item = coreNFTs[i]
