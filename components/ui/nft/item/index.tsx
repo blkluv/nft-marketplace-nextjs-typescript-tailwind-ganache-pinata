@@ -4,9 +4,10 @@ import Image from 'next/image'
 
 type NFTItemProps = {
   item: NFT
+  BuyNFT: (tokenId: number, value: number) => Promise<void>
 }
 
-const NFTItem: FunctionComponent<NFTItemProps> = ({ item }) => {
+const NFTItem: FunctionComponent<NFTItemProps> = ({ item, BuyNFT }) => {
   return (
     <>
       <div className='flex-shrink-0'>
@@ -66,6 +67,7 @@ const NFTItem: FunctionComponent<NFTItemProps> = ({ item }) => {
         <div>
           <button
             type='button'
+            onClick={() => BuyNFT(item.tokenId, item.price)}
             className='disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none disabled:cursor-not-allowed mr-2 inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
           >
             Buy

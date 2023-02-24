@@ -2,9 +2,8 @@
 
 import type { NextPage } from 'next'
 import { BaseLayout, NFTList } from '@ui'
-import { useListedNFTs } from '@hooks/web3'
+
 const Home: NextPage = () => {
-  const { nfts } = useListedNFTs()
   return (
     <BaseLayout>
       {}
@@ -21,7 +20,7 @@ const Home: NextPage = () => {
               Mint a NFT to get unlimited ownership forever!
             </p>
           </div>
-          <NFTList nfts={nfts?.data} />
+          <NFTList />
         </div>
       </div>
     </BaseLayout>

@@ -1,6 +1,7 @@
 import { CryptoHookFactory } from '@_types/hooks'
 import { NFT } from '@_types/nft'
 import { ethers } from 'ethers'
+import { useCallback } from 'react'
 import useSWR from 'swr'
 
 type OwnedNFTsHookFactory = CryptoHookFactory<NFT[], UseOwnedNFTsResponse>
@@ -8,7 +9,7 @@ type OwnedNFTsHookFactory = CryptoHookFactory<NFT[], UseOwnedNFTsResponse>
 export type UseOwnedNFTsHook = ReturnType<OwnedNFTsHookFactory>
 
 type UseOwnedNFTsResponse = {
-
+  ListNFT: (tokenId: number, price: number) => Promise<void>
 }
 //deps -> provider, ethereum, contract
 export const hookFactory: OwnedNFTsHookFactory =
@@ -40,5 +41,24 @@ export const hookFactory: OwnedNFTsHookFactory =
       }
     )
 
-    return { ...swrRes, data: data || [] }
+    const _contract = contract
+    const ListNFT = useCallback(
+      async (tokenId: number, price: number) => {
+        try {
+          const result = await _contract!.sellNFT(
+            tokenId,
+            ethers.utils.parseEther(price.toString()),
+            { value: ethers.utils.parseEther((0.025).toString()) }
+          )
+
+          await result?.wait()
+          alert('Item has been listed.')
+        } catch (e: any) {
+          console.error(e.message)
+        }
+      },
+      [_contract]
+    )
+
+    return { ...swrRes, ListNFT, data: data || [] }
   }

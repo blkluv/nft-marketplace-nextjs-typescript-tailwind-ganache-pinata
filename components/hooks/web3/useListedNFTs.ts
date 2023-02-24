@@ -1,6 +1,7 @@
 import { CryptoHookFactory } from '@_types/hooks'
 import { NFT } from '@_types/nft'
 import { ethers } from 'ethers'
+import { useCallback } from 'react'
 import useSWR from 'swr'
 
 type ListedNFTsHookFactory = CryptoHookFactory<NFT[], UseListedNFTsResponse>
@@ -8,6 +9,7 @@ type ListedNFTsHookFactory = CryptoHookFactory<NFT[], UseListedNFTsResponse>
 export type UseListedNFTsHook = ReturnType<ListedNFTsHookFactory>
 
 type UseListedNFTsResponse = {
+  BuyNFT: (tokenId: number, value: number) => Promise<void>
 }
 //deps -> provider, ethereum, contract
 export const hookFactory: ListedNFTsHookFactory =
@@ -39,5 +41,22 @@ export const hookFactory: ListedNFTsHookFactory =
       }
     )
 
-    return { ...swrRes, data: data || [] }
+    const _contract = contract
+    const BuyNFT = useCallback(
+      async (tokenId: number, value: number) => {
+        try {
+          const result = await _contract!.buyNFT(tokenId, {
+            value: ethers.utils.parseEther(value.toString()),
+          })
+
+          await result?.wait()
+          alert('You have bought the NFT. See Profile Page')
+        } catch (e: any) {
+          console.error(e.message)
+        }
+      },
+      [_contract]
+    )
+
+    return { ...swrRes, BuyNFT, data: data || [] }
   }
