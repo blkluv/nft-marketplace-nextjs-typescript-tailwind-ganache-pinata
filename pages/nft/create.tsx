@@ -5,11 +5,12 @@ import { ChangeEvent, useState } from 'react'
 import { BaseLayout } from '@ui'
 import { Switch } from '@headlessui/react'
 import Link from 'next/link'
-import { NFTMetaData } from '@_types/nft'
-import axios from 'axios'
+import { NFTMetaData, PinataResponse } from '@_types/nft'
 import { useWeb3 } from '@providers/web3'
+import axios from 'axios'
+import { debug } from 'console'
 
-
+const ALLOWED_FIELDS = ['name', 'description', 'image', 'attributes']
 const NftCreate: NextPage = () => {
   const { ethereum } = useWeb3()
   const [nftURI, setNftURI] = useState('')
@@ -32,6 +33,49 @@ const NftCreate: NextPage = () => {
     setNFTMetadata({ ...nftMetadata, [name]: value })
   }
 
+  const handleImage = async (e: ChangeEvent<HTMLInputElement>) => {
+    //No file selected
+    debugger
+    if (!e.target.files || e.target.files.length === 0) {
+      console.error('Select a file')
+      return
+    }
+
+    //File selected
+    const file = e.target.files[0]
+
+    //Get raw bytes
+    const buffer = await file.arrayBuffer()
+    const bytes = new Uint8Array(buffer)
+
+    try {
+      debugger
+      const { signedData, account } = await getSignedData()
+
+      debugger
+      //Step 1: Verify Signed Message
+      const response = await axios.post('/api/verify-image', {
+        address: account,
+        signature: signedData,
+        bytes,
+        contentType: file.type,
+        fileName: file.name.replace(/\.[^/.]+$/, ''),
+      })
+
+      debugger
+      const data = response.data as PinataResponse
+      setNFTMetadata({
+        ...nftMetadata,
+        image: `${process.env.NEXT_PUBLIC_PINATA_DOMAIN}/ipfs/${data.ipfsHash}`,
+      })
+
+      debugger
+      console.log(data)
+    } catch (e: any) {
+      console.error(e.message)
+    }
+  }
+
   //Trait types changed
   const handleAttributeChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -43,34 +87,62 @@ const NftCreate: NextPage = () => {
     setNFTMetadata({ ...nftMetadata, attributes: nftMetadata.attributes })
   }
 
-  const createNFT = async () => {
+  const getSignedData = async () => {
+    // Step 1: Get Signature
+    const messageToSign = await axios.get('/api/verify')
+    const accounts = (await ethereum?.request({
+      method: 'eth_requestAccounts',
+    })) as string[]
+    const account = accounts[0]
+
+    // Step 2: Create Signed Message
+    const signedData = await ethereum?.request({
+      method: 'personal_sign',
+      params: [
+        JSON.stringify(messageToSign.data),
+        account,
+        messageToSign.data.id,
+      ],
+    })
+
+    debugger
+    return { signedData, account }
+  }
+
+  const uploadMetadata = async () => {
     try {
-      // Step 1: Get Signature
-      const messageToSign = await axios.get('/api/verify/')
-      const accounts = (await ethereum?.request({
-        method: 'eth_requestAccounts',
-      })) as string[]
-      const account = accounts[0]
+      //Step 1, get signedData
+      const { signedData, account } = await getSignedData()
 
-      // Step 2: Create Signed Message
-      const signedData = await ethereum?.request({
-        method: 'personal_sign',
-        params: [
-          JSON.stringify(messageToSign.data),
-          account,
-          messageToSign.data.id,
-        ],
-      })
-
-      //Step 3: Verify Signed Message
-      await axios.post('/api/verify', {
+      //Step 2: Verify Signed Message
+      const response = await axios.post('/api/verify', {
         address: account,
         signature: signedData,
         nft: nftMetadata,
       })
 
+      const data = response.data as PinataResponse
+      setNftURI(
+        `${process.env.NEXT_PUBLIC_PINATA_DOMAIN}/ipfs/${data.ipfsHash}`
+      )
       //Step 4 Match unsigned message from session and signature sent
+    } catch (e: any) {
+      console.error(e.message)
+    }
+  }
 
+  const createNFT = async () => {
+    try {
+      const nftRes = await axios.get(nftURI)
+      const content = nftRes.data
+
+      Object.keys(content).forEach((key) => {
+        if (!ALLOWED_FIELDS.includes(key)) {
+          throw new Error('Invalid Json Structure')
+        }
+      })
+
+      alert('Can create NFT')
     } catch (e: any) {
       console.error(e.message)
     }
@@ -170,6 +242,7 @@ const NftCreate: NextPage = () => {
                   </div>
                   <div className='px-4 py-3 bg-gray-50 text-right sm:px-6'>
                     <button
+                      onClick={createNFT}
                       type='button'
                       className='inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
                     >
@@ -239,12 +312,8 @@ const NftCreate: NextPage = () => {
                       </p>
                     </div>
                     {/* Has Image? */}
-                    {false ? (
-                      <img
-                        src='https://eincode.mypinata.cloud/ipfs/QmaQYCrX9Fg2kGijqapTYgpMXV7QPPzMwGrSRfV9TvTsfM/Creature_1.png'
-                        alt=''
-                        className='h-40'
-                      />
+                    {nftMetadata.image ? (
+                      <img src={nftMetadata.image} alt='' className='h-40' />
                     ) : (
                       <div>
                         <label className='block text-sm font-medium text-gray-700'>
@@ -273,6 +342,7 @@ const NftCreate: NextPage = () => {
                               >
                                 <span>Upload a file</span>
                                 <input
+                                  onChange={handleImage}
                                   id='file-upload'
                                   name='file-upload'
                                   type='file'
@@ -318,7 +388,7 @@ const NftCreate: NextPage = () => {
                   <div className='px-4 py-3 bg-gray-50 text-right sm:px-6'>
                     <button
                       type='button'
-                      onClick={createNFT}
+                      onClick={uploadMetadata}
                       className='inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
                     >
                       List

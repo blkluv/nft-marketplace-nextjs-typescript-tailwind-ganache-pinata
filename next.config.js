@@ -7,4 +7,15 @@ const nextConfig = {
   }
 }
 
+module.exports = {
+  async rewrites() {
+      return [
+        {
+          source: '/api/:path*',
+          destination: 'https://app.pinata.cloud/:path*',
+        },
+      ]
+    },
+};
+
 module.exports = nextConfig

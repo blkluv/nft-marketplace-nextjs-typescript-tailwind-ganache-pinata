@@ -24,3 +24,16 @@ export type NFTCore = {
 export type NFT = {
   meta: NFTMetaData
 } & NFTCore
+
+export type FileRequest = {
+  bytes: Uint8Array
+  contentType: string
+  fileName: string
+}
+
+export type PinataResponse = {
+  ipfsHash: string
+  PinSize: number
+  Timestamp: string
+  isDuplicate: true
+}

@@ -26,6 +26,9 @@ export const withSession = (handler: any) => {
   })
 }
 
+export const pinataApiKey = process.env.PINATA_SECRET_KEY
+export const pinataSecretApiKey = process.env.PINATA_SECRET_KEY
+
 export const addressCheckMiddleware = async (
   req: NextApiRequest & { session: Session },
   res: NextApiResponse
@@ -33,7 +36,7 @@ export const addressCheckMiddleware = async (
   return new Promise(async (resolve, reject) => {
     const message = req.session.get('message-session')
     const provider = new ethers.providers.JsonRpcProvider(
-      'HTTP://127.0.0.1:7545'
+      'http://127.0.0.1:7545'
     )
 
     const contract = new ethers.Contract(
@@ -59,7 +62,7 @@ export const addressCheckMiddleware = async (
 
     console.log(address)
     console.log(nonce)
-    
+
     if (address === req.body.address) {
       resolve('Correct Address')
     } else {
