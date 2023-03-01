@@ -6,8 +6,10 @@ type NetworkHookFactory = CryptoHookFactory<string, UseNetworkResponse>
 export type UseNetworkHook = ReturnType<NetworkHookFactory>
 
 type UseNetworkResponse = {
-  isLoading: boolean,
+  isLoading: boolean
   isSurpported: boolean
+  targetNetwork: string
+  isConnectedToNetwork: boolean
 }
 
 const NETWORKS: { [k: string]: string } = {
@@ -20,7 +22,7 @@ const NETWORKS: { [k: string]: string } = {
   1337: 'Ganache',
 }
 
-const targetId = process.env.NEXT_PUBLIC_TARGET_CHAIN_ID as string;
+const targetId = process.env.NEXT_PUBLIC_TARGET_CHAIN_ID as string
 const targetNetwork = NETWORKS[targetId]
 
 //deps -> provider, ethereum, contract
@@ -38,16 +40,19 @@ export const hookFactory: NetworkHookFactory =
       },
       {
         revalidateOnFocus: false,
-        shouldRetryOnError: false
+        shouldRetryOnError: false,
       }
     )
+
+    const isSupported = data === targetNetwork
 
     return {
       ...swrRes,
       data,
       isValidating,
       targetNetwork,
-      isSurpported: data === targetNetwork,
+      isSurpported: isSupported,
+      isConnectedToNetwork: !isLoading && isSupported,
       isLoading: isLoading as boolean,
     }
   }

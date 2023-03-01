@@ -11,7 +11,6 @@ import {
 import FormData from 'form-data'
 import axios from 'axios'
 
-debugger
 export default withSession(
   async (req: NextApiRequest & { session: Session }, res: NextApiResponse) => {
     debugger

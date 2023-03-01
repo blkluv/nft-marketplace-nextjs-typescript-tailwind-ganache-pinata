@@ -45,8 +45,6 @@ export const addressCheckMiddleware = async (
       provider
     ) as unknown as NftMarketContract
 
-    console.log(message)
-
     let nonce: string | Buffer =
       '\x19Ethereum Signed Message:\n' +
       JSON.stringify(message).length +
